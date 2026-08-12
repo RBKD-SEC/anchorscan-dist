@@ -1,0 +1,16 @@
+anchorscan binary-only distribution — NOTICE
+
+Copyright (c) 2026 RBKD-SEC. All rights reserved.
+
+The anchorscan binary is distributed under the Apache License 2.0 (see LICENSE).
+It bundles the Fathom closed-source engine under proprietary terms
+(see NOTICE-fathom.txt); Fathom reverse engineering is prohibited.
+
+This distribution contains only authorized binaries and public materials:
+no source code, no .env, no internal paths, no tokens, and no customer data.
+Each release is promoted from an accepted new-Anchor artifact with its digest
+preserved; it is never rebuilt in this repository. Verify with checksums.txt
+and provenance.json.
+
+The canonical source repository URL remains valid during the 60-day migration
+window and its historical releases are not deleted.

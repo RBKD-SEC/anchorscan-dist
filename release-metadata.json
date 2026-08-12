@@ -1,0 +1,13 @@
+{
+  "artifacts": [
+    {
+      "name": "anchorscan-v2.0.6-test-darwin-arm64.tar.gz",
+      "sha256": "35d81ddc957f0617380747398bc1ce9536e458f2c36a7b14e4dcbe26b3f3b000"
+    }
+  ],
+  "published_at": "2026-08-12T11:51:50Z",
+  "rebuilt": false,
+  "release": "v2.0.6-test",
+  "repository": "RBKD-SEC/anchorscan-dist",
+  "source": "new-Anchor accepted artifact (Ticket 15 dry-run passed)"
+}
