@@ -21,6 +21,44 @@ sudo cp anchorscan-*/anchorscan /usr/local/bin/
 anchorscan doctor          # 依赖健康（fathom/nmap/nuclei/知识库/bundle）
 ```
 
+## 首次使用配置
+
+release 归档内的 `fathom`（闭源扫描引擎）已随包附带（包内 `tools/fathom/fathom`，Windows 为 `tools/fathom/fathom.exe`），`anchorscan doctor` 会自动检测，**无需单独下载**；fathom 不提供源码、不能自行编译，二进制受 `NOTICE` 中 proprietary 条款约束。以下两项需自行配置：
+
+### 1. 外部工具（nmap / nuclei / httpx / nuclei-templates）
+
+`nmap`、`nuclei`、`httpx` 为外部开源工具，需自行安装并放入系统 `PATH`（系统包管理器或官方 Releases 任选其一）：
+
+- `nmap`（NSE 引擎）：
+  - macOS：`brew install nmap`
+  - Debian/Ubuntu：`sudo apt install nmap`
+  - Windows / 其它平台：https://nmap.org/download.html
+- `nuclei`（漏洞模板探测引擎）：
+  - 已安装 Go 环境：`go install -v github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest`
+  - 或下载预编译二进制：https://github.com/projectdiscovery/nuclei/releases
+- `httpx`（Web 指纹识别）：
+  - 已安装 Go 环境：`go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest`
+  - 或下载预编译二进制：https://github.com/projectdiscovery/httpx/releases
+- `nuclei-templates`（官方社区模板，nuclei 扫描必需）：
+  - `git clone https://github.com/projectdiscovery/nuclei-templates ~/nuclei-templates`
+
+安装后用 `which nmap nuclei httpx` 确认命令在 PATH 中；不在 PATH 时，编辑自动生成的 `config/default.yaml` 的 `tools` 段填入绝对路径即可。
+
+### 2. 漏洞知识库（catalog 单源，可选）
+
+发行归档**不带** catalog 副本（catalog 只在知识库仓库更新）。首次使用前自行克隆知识库仓库（RBKD-SEC/Pentest-Playbook，**私有仓库，需先申请访问权限**），并在配置中把 `knowledge_base.path` 指向其 catalog 产物（catalog 协议 **version 2**、`source: handbook-v2`）：
+
+```bash
+# 1. 克隆知识库仓库，得到 handbook-v2/dist/catalog.json
+#    git clone git@github.com:RBKD-SEC/Pentest-Playbook.git
+# 2. 编辑 config/default.yaml（首次运行 anchorscan 命令自动生成）：
+#      knowledge_base:
+#        path: ~/Pentest-Playbook/handbook-v2/dist/catalog.json
+# 3. 重启 AnchorScan
+```
+
+未配置知识库**不影响扫描功能**（`/kb` 显示 disabled 与明确诊断），仅报告 enrich 与验证工作台无 KB 条目可用。更新方式：在克隆仓库内 `git pull` 拉取新 catalog 后重启 AnchorScan。
+
 ## 升级与回滚
 
 - **升级**：下载新 release，校验后替换二进制；历史 release 全部保留。
